@@ -2,11 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Workout(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="workouts")
+  workout_name = models.CharField(max_length=50, null=True)
   date = models.DateField(auto_now_add=True)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="workouts")
+
+  # TO DO: implement create method to take a request with JSON with Workout and it's exercises and sets
+  # def create(self, validated_data):
+  #   exercises_data = validated_data.pop('exercises', [])
 
   def __str__(self):
-    return f"{self.user.username}'s workout on {self.date}"
+    workout_name = self.workout_name or "Workout" 
+    num_exercises = self.exercises.all().count()
+    return f"{self.user.username} - {workout_name} on {self.date} - {num_exercises} exercises"
 
 class UserExercise(models.Model):
   exercise = models.CharField(max_length=50)

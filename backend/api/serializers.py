@@ -1,6 +1,17 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Workout, UserExercise 
+from .models import Set, UserExercise, Workout
+
+class SetSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Set
+    fields = '__all__'
+
+class UserExerciseSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = UserExercise
+    fields = '__all__'
+    # extra_kwargs = {'user': {'read_only': True}}
 
 class WorkoutSerializer(serializers.ModelSerializer):
   class Meta:
@@ -17,9 +28,3 @@ class UserSerializer(serializers.ModelSerializer):
     # print(validated_data)
     user = User.objects.create_user(**validated_data)
     return user
-
-class UserExerciseSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = UserExercise
-    fields = '__all__'
-    extra_kwargs = {'user': {'read_only': True}}
