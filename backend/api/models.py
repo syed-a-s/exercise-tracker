@@ -2,31 +2,35 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Workout(models.Model):
-  workout_name = models.CharField(max_length=50, null=True)
+  workout_name = models.CharField(max_length=50, null=True, blank=True)
   date = models.DateField(auto_now_add=True)
-  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="workouts")
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  # TO DO: implement create method to take a request with JSON with Workout and it's exercises and sets
-  # def create(self, validated_data):
-  #   exercises_data = validated_data.pop('exercises', [])
+  @property
+  def user_exercises(self):
+    return self.userexercise_set.all()
 
   def __str__(self):
     workout_name = self.workout_name or "Workout" 
-    num_exercises = self.exercises.all().count()
+    num_exercises = self.userexercise_set.all().count()
     return f"{self.user.username} - {workout_name} on {self.date} - {num_exercises} exercises"
 
 class UserExercise(models.Model):
-  exercise = models.CharField(max_length=50)
-  workout = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True, related_name="exercises")
+  exercise_name = models.CharField(max_length=50)
+  workout = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True)
+
+  @property
+  def exercise_sets(self):
+    return self.exerciseset_set.all()
 
   def __str__(self):
-    return f"{self.workout.user.username} - {self.exercise}"
+    return f"{self.workout.user.username} - {self.exercise_name}"
 
-class Set(models.Model):
+class ExerciseSet(models.Model):
   set_number = models.PositiveIntegerField()
   reps = models.PositiveIntegerField()
   weight = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-  user_exercise = models.ForeignKey(UserExercise, on_delete=models.CASCADE, null=True, related_name="sets") 
+  user_exercise = models.ForeignKey(UserExercise, on_delete=models.CASCADE, null=True) 
 
   def __str__(self):
     return f"Set {self.set_number} - {self.user_exercise} for {self.reps} reps at {self.weight} kgs" 
