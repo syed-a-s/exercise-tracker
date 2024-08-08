@@ -13,7 +13,6 @@ class UserExerciseSerializer(serializers.ModelSerializer):
   class Meta:
     model = UserExercise
     fields = '__all__'
-    # extra_kwargs = {'user': {'read_only': True}}
 
 class WorkoutSerializer(serializers.ModelSerializer):
   user_exercises = UserExerciseSerializer(many=True)
@@ -21,6 +20,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
   class Meta:
     model = Workout
     fields = '__all__'
+    extra_kwargs = {'user': {'read_only': True}}
 
   def create(self, validated_data):
     user_exercises_data = validated_data.pop('user_exercises', []) # get and remove exercise data
