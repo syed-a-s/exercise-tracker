@@ -65,27 +65,25 @@ function Home() {
     .catch((err) => alert(err)) 
   }
 
-  if (loading) {
-    return (
-      <div>Loading...</div>
-    )
-  }
-
   return (
     loading 
-    ? <div>Loading...</div> 
+    ? (
+      <div>Loading...</div> 
+    )
     : (
-    <div>
       <div>
-        <h2>Workouts</h2>
-        {workouts.workouts.map((workout) => <Workout workout={workout} key={workout.id} onDelete={deleteWorkout}/>)}
+        <div>
+          <h2>Workouts</h2>
+          {workouts.workouts.map((workout) => (
+            <Workout workout={workout} key={workout.id} onDelete={deleteWorkout}/>
+          ))}
+        </div>
+        <div>
+          <h2>Create a Workout</h2>
+          <form>
+          </form>
+        </div>
       </div>
-      <div>
-        <h2>Create a Workout</h2>
-        <form>
-        </form>
-      </div>
-    </div>
     )
   )
 }
