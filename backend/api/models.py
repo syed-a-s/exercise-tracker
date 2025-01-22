@@ -28,8 +28,8 @@ class UserExercise(models.Model):
 
 class ExerciseSet(models.Model):
   set_number = models.PositiveIntegerField()
-  reps = models.PositiveIntegerField()
   weight = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+  reps = models.PositiveIntegerField()
   user_exercise = models.ForeignKey(UserExercise, on_delete=models.CASCADE, null=True) 
 
   def __str__(self):

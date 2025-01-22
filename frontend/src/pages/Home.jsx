@@ -1,25 +1,11 @@
 import { useState, useEffect } from "react"
 import api from "../api"
 import Workout from "../components/Workout"
+import WorkoutForm from "../components/WorkoutForm"
 
 function Home() {
   const [loading, setLoading] = useState(true)
   const [workouts, setWorkouts] = useState([])
-  const [newWorkout, setNewWorkout] = useState({
-    workout_name: '',
-    user_exercises: [
-      {
-        exercise_sets: [
-          {
-            set_number: 1, 
-            reps: 1,
-            weight: 1,
-          }
-        ],
-        exercise_name: ''
-      }
-    ]
-  })
 
   useEffect(() => {
     getWorkouts()
@@ -36,19 +22,6 @@ function Home() {
       setWorkouts(data)
       setLoading(false)
     }) // value of response body (the data/payload) is sent to next .then() as argument
-    .catch((err) => alert(err))
-  }
-
-  const createWorkout = (e) => {
-    e.preventDefault()
-    api.post("/api/workouts/") // add data to send here
-    .then((res) => {
-      if (res.status === 201) {
-        alert("Workout created!")
-      } else {
-        alert("Failed to create workout!")
-      }
-    })
     .catch((err) => alert(err))
   }
 
@@ -79,9 +52,7 @@ function Home() {
           ))}
         </div>
         <div>
-          <h2>Create a Workout</h2>
-          <form>
-          </form>
+          <WorkoutForm />
         </div>
       </div>
     )
