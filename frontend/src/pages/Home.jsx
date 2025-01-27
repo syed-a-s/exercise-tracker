@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import api from "../api"
-import Workout from "../components/Workout"
+import Workout from "../components/Workouts"
 import WorkoutForm from "../components/WorkoutForm"
 
 function Home() {
@@ -25,19 +25,6 @@ function Home() {
     .catch((err) => alert(err))
   }
 
-  const deleteWorkout = (id) => {
-    api.delete(`/api/workouts/delete/${id}/`)
-    .then((res) => {
-      if (res.status === 204) {
-        alert("Workout was deleted!")
-      } else {
-        alert("Failed to delete note!")
-      }
-      getWorkouts()
-    })
-    .catch((err) => alert(err)) 
-  }
-
   return (
     loading 
     ? (
@@ -45,18 +32,11 @@ function Home() {
     )
     : (
       <div>
-        <div>
-          <h2>Workouts</h2>
-          {workouts.workouts.map((workout) => (
-            <Workout workout={workout} key={workout.id} onDelete={deleteWorkout}/>
-          ))}
-        </div>
-        <div>
-          <WorkoutForm />
-        </div>
+          <Workout workouts={workouts} getWorkouts={getWorkouts}/>
+          <WorkoutForm getWorkouts={getWorkouts}/>
       </div>
     )
   )
 }
 
-export default Home
+export default Home;

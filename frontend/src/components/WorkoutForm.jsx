@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import api from "../api";
 
-const WorkoutForm = () => {
+const WorkoutForm = ({ getWorkouts }) => {
   const [newWorkout, setNewWorkout] = useState({
     workout_name: '',
     user_exercises: [
@@ -102,13 +102,17 @@ const WorkoutForm = () => {
         alert("Failed to create workout!")
       }
     })
-    .catch((err) => alert(err));
+    .catch((err) => alert(err))
+    .finally(() => getWorkouts());
+  }
+
+  const test = () => {
+    console.log(newWorkout);
   }
 
   return (
     <div className="workout-form-container">
-    <h2>Create a Workout</h2>
-    <button onClick={postWorkout}>Test</button>
+      <h2>Create a Workout</h2>
       <form>
         <div>
           <label>Workout Name:</label>
@@ -183,4 +187,4 @@ const WorkoutForm = () => {
   )
 }
 
-export default WorkoutForm
+export default WorkoutForm;
